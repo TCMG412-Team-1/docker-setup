@@ -1,0 +1,24 @@
+FROM ubuntu
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN apt-get update
+RUN apt-get install -y curl
+RUN apt-get install -y git
+RUN apt-get install -y vim
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+RUN echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+RUN apt-get update
+RUN apt-get install -y mongodb-org
+RUN command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+RUN curl -L https://get.rvm.io | bash -s stable --ruby
+RUN source /usr/local/rvm/scripts/rvm
+RUN gem update --system
+RUN rvm gemset use global
+RUN gem update
+RUN echo "gem: --no-document" >> ~/.gemrc
+RUN apt-get install nodejs
+RUN gem install bundler
+RUN gem install nokogiri
+RUN rvm install ruby-2.3.1
+RUN rvm use ruby-2.3.1@rails5.0 --create
+RUN gem install rails
+CMD "bin/bash"
